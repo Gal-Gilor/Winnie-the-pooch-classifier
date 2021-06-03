@@ -136,6 +136,7 @@ def run_app(img_path: str):
 
             top_dogs = {dog_breed_labels[ind[i].item()]: round(
                 proba[i].item()*100, 2) for i in range(n_breeds)}
+
             # compose user-message
             breeds = list(top_dogs.keys())
             probas = list(top_dogs.values())
@@ -143,7 +144,8 @@ def run_app(img_path: str):
         # find if there's a dog in the image
         if is_dog:
 
-            if probas[0] >= 65:
+            # if the classifier is more than 65% sure about a single breed, call it pure bread
+            if probas[0] >= 65:  # random cut-off
                 message = f'The dog in the image looks like a pure-bread {breeds[0]}'
 
             else:
@@ -157,6 +159,7 @@ def run_app(img_path: str):
 
         else:
             message = 'Unable to classify the dog breed. Please try a different image'
+
     except Exception as e:
         print(str(e))
         message = 'Unable to classify the dog breed. Please try a different image'
