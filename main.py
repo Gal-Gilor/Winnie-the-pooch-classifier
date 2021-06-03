@@ -1,4 +1,5 @@
 from PIL import ImageFile, Image
+import re
 import sys
 import numpy as np
 import joblib as jb
@@ -167,22 +168,53 @@ def run_app(img_path: str):
 if __name__ == "__main__":
 
     # save all the images the user wants to check
-    paths = str(sys.argv[1:])
+    paths = sys.argv[1:]  # first argument is the file name
+
+    n_images = len(paths) if type(paths) == list else 1
 
     # ensure user gives path to image
-    assert len(paths) > 0, "Please enter a valid path to an image"
+    assert n_images > 0, "Please enter a valid path to an image."
 
-    # get ground truth labels for test dataset
-    truth = pd.read_csv('ground_truth.csv')
-    # y_true = truth.as_matrix(columns=["task_1", "task_2"])
-    y_true = truth[['task_1', 'task_2']].to_numpy()
+    # limit the user input to no more than 3 images
+    assert n_images < 4, "Please don't request more than 3 images at a time."
 
-    # get model predictions for test dataset
-    y_pred = pd.read_csv(preds_path)
-    # y_pred = y_pred.as_matrix(columns=["task_1", "task_2"])
-    y_pred = y_pred[['task_1', 'task_2']].to_numpy()
-    # plot ROC curves and print scores
-    plot_roc_auc(y_true, y_pred)
-    # plot confusion matrix
-    classes = ['benign', 'malignant']
-    plot_confusion_matrix(y_true[:, 0], y_pred[:, 0], thresh, classes)
+    # define figure
+    nrows = 1
+    fig, ax = plt.subplots(nrows, n_images, figsize=(3*n_images, 7))
+
+    # resize to display images in uniform size
+    CROP = (256, 256)
+
+    # if user supplied more than one image, classify and display all
+    if isinstance(ax, np.ndarray):
+
+        # reshape the ax matrix to a single row to iterate
+        flattened_ax = ax.flatten()
+
+        for path, axe in zip(paths, flattened_ax):
+
+            # load image
+            image = Image.open(path).resize(CROP)
+
+            # run the app and check dog breed
+            title = run_app(path)
+
+            # display the image and the app result
+            axe.imshow(image)
+            axe.set_title(title, size=5)
+            axe.set_axis_off()
+
+    else:
+        # load image
+        image = Image.open(paths[0]).resize(CROP)
+
+        # run the app
+        title = run_app(paths[0])
+
+        # display the image and the app result
+        ax.imshow(image)
+        ax.set_title(title, size=6)
+        ax.set_axis_off()
+
+    plt.show()
+    plt.tight_layout()
