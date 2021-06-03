@@ -1,5 +1,4 @@
 from PIL import ImageFile, Image
-import re
 import sys
 import numpy as np
 import joblib as jb
