@@ -29,5 +29,5 @@ python main.py <path/to/image>
 
 or
  
-python main.py <path/to/image> python main.py <path/to/image2> python main.py <path/to/image3>
+python main.py <path/to/image> <path/to/image2> <path/to/image3>
 ```
