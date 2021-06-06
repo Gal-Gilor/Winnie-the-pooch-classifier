@@ -12,6 +12,8 @@ import torch.optim as optim
 import torch.nn as nn
 from facenet_pytorch import MTCNN
 
+import streamlit as st
+
 
 def face_detector(image_path: str) -> float:
     '''
@@ -220,3 +222,24 @@ if __name__ == "__main__":
 
     plt.show()
     plt.tight_layout()
+
+
+##############################
+########## Frontend ##########
+##############################
+
+
+st.markdown('# Winnie the Pooch Classfier')
+option = st.sidebar.selectbox(
+    'Navigation Bar', ['Dogs', 'Humans'])
+
+
+if option == 'Dogs':
+    # Show dog images
+    st.markdown("""
+
+                """)
+else:
+    # show image of humans
+    st.markdown(""" 
+                """)
