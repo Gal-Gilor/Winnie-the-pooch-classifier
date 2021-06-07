@@ -182,47 +182,19 @@ if __name__ == "__main__":
     # limit the user input to no more than 3 images
     assert n_images < 4, "Please don't request more than 3 images at a time."
 
-    # define figure
-    nrows = 1
-    fig, ax = plt.subplots(nrows, n_images, figsize=(3*n_images, 7))
-
-    # resize to display images in uniform size
-    CROP = (256, 256)
-
     # if user supplied more than one image, classify and display all
-    if isinstance(ax, np.ndarray):
+    prompt = []
+    if n_images > 1:
 
-        # reshape the ax matrix to a single row to iterate
-        flattened_ax = ax.flatten()
-
-        for path, axe in zip(paths, flattened_ax):
-
-            # load image
-            image = Image.open(path).resize(CROP)
+        for path in paths:
 
             # run the app and check dog breed
-            title = run_app(path)
-
-            # display the image and the app result
-            axe.imshow(image)
-            axe.set_title(title, size=5)
-            axe.set_axis_off()
+            prompt.append(run_app(path))
 
     else:
-        # load image
-        image = Image.open(paths[0]).resize(CROP)
 
         # run the app
-        title = run_app(paths[0])
-
-        # display the image and the app result
-        ax.imshow(image)
-        ax.set_title(title, size=6)
-        ax.set_axis_off()
-
-    plt.show()
-    plt.tight_layout()
-
+        prompt = run_app(paths[0])
 
 ##############################
 ########## Frontend ##########
