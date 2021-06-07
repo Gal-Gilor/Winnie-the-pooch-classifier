@@ -29,7 +29,7 @@ python main.py <path/to/image>
 
 or
  
-python main.py <path/to/image> <path/to/image2> <path/to/image3>
+python classify-breed.py <path/to/image> <path/to/image2> <path/to/image3>
 ```
 
 ## Deep Learning Models
