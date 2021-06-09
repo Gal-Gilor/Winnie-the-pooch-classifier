@@ -1,5 +1,3 @@
-import os
-from glob import glob
 from PIL import ImageFile, Image
 import sys
 import numpy as np
@@ -77,7 +75,7 @@ def prepare_image(image_path: str) -> torch.Tensor:
     '''
 
     # load image
-    image = Image.open(image_path)  # .convert('RGB')  # ensure color image
+    image = Image.open(image_path).convert('RGB')  # ensure color image
 
     # process image for vgg 16
     transform = transforms.Compose([transforms.Resize(256),
@@ -101,7 +99,7 @@ def prepare_image(image_path: str) -> torch.Tensor:
 
 def run_app(img_path: str):
 
-    #assert type(img_path) == str, 'Function requires a image path as a string'
+    assert type(img_path) == str, 'Function requires a image path as a string'
 
     # check whether the image contains an image of a dog
     is_dog = dog_detector(img_path)
@@ -171,50 +169,49 @@ def run_app(img_path: str):
     return message
 
 
+if __name__ == "__main__":
+
+    # save all the images the user wants to check
+    paths = sys.argv[1:]  # first argument is the file name
+
+    n_images = len(paths) if type(paths) == list else 1
+
+    # ensure user gives path to image
+    assert n_images > 0, "Please enter a valid path to an image."
+
+    # limit the user input to no more than 3 images
+    assert n_images < 4, "Please don't request more than 3 images at a time."
+
+    # if user supplied more than one image, classify and display all
+    prompt = []
+    if n_images > 1:
+
+        for path in paths:
+
+            # run the app and check dog breed
+            prompt.append(run_app(path))
+
+    else:
+
+        # run the app
+        prompt = run_app(paths[0])
+
 ##############################
 ########## Frontend ##########
 ##############################
 
+
 st.markdown('# Winnie the Pooch Classfier')
 option = st.sidebar.selectbox(
-    'Image Navigation', ['Dogs', 'Humans'])
+    'Navigation Bar', ['Dogs', 'Humans'])
 
-# Path to images that will be used for detection
-DOG_PATH = "test_images/Dogs"
-HUMAN_PATH = "test_images/Humans"
 
 if option == 'Dogs':
-
     # Show dog images
-    folder_path = f"{os.path.join(os.getcwd(), DOG_PATH)}"
+    st.markdown("""
 
-    # display the user images to predict
-    image_names = os.listdir(folder_path)
-    image_selection = st.sidebar.selectbox(
-        "Please pick an image using this drop-down menu.", image_names)
-
-    selected_path = str(os.path.join(folder_path, image_selection))
-    image = Image.open(selected_path)
-    predict = run_app(selected_path)
-
-    # display the results
-    st.markdown(predict)
-    st.image(image, use_column_width=True)
-    
+                """)
 else:
-
-    # show image of humann
-    folder_path = f"{os.path.join(os.getcwd(), HUMAN_PATH)}"
-
-    # display the user images to predict
-    image_names = os.listdir(folder_path)
-    image_selection = st.sidebar.selectbox(
-        "Please pick an image using this drop-down menu.", image_names)
-
-    selected_path = os.path.join(folder_path, image_selection)
-    image = Image.open(selected_path)
-    predict = run_app(selected_path)
-
-    # display the results
-    st.markdown(predict)
-    st.image(image, use_column_width=True)
+    # show image of humans
+    st.markdown(""" 
+                """)
