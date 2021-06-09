@@ -200,8 +200,7 @@ if option == 'Dogs':
     # display the results
     st.markdown(predict)
     st.image(image, use_column_width=True)
-
-
+    
 else:
 
     # show image of humann
