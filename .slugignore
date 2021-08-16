@@ -1,5 +1,11 @@
 # data folder
-/dogImages
+dogImages/
 
 # torch files
 *.pt
+
+# archive
+Archive/
+
+# pickle
+*.pkl
