@@ -1,3 +1,4 @@
+#!C:\Program Files (x86)\Gow\bin\bash.EXE
 mkdir -p ~/.streamlit/
 
 echo "\
