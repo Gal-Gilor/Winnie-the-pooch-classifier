@@ -1,11 +1,7 @@
-#!/usr/bin/env python
 import os
-from glob import glob
-from PIL import ImageFile, Image
+from PIL import Image
 import sys
-import numpy as np
 import joblib as jb
-import matplotlib.pyplot as plt
 
 import torch
 import torchvision.models as models
