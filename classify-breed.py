@@ -101,7 +101,7 @@ def prepare_image(image_path: str) -> torch.Tensor:
 
 def run_app(img_path: str):
 
-    #assert type(img_path) == str, 'Function requires a image path as a string'
+    # assert type(img_path) == str, 'Function requires a image path as a string'
 
     # check whether the image contains an image of a dog
     is_dog = dog_detector(img_path)
@@ -175,46 +175,47 @@ def run_app(img_path: str):
 ########## Frontend ##########
 ##############################
 
-st.markdown('# Winnie the Pooch Classfier')
-option = st.sidebar.selectbox(
-    'Image Navigation', ['Dogs', 'Humans'])
 
-# Path to images that will be used for detection
-DOG_PATH = "test_images/Dogs"
-HUMAN_PATH = "test_images/Humans"
+page = st.selectbox("Winnie the Pooch - Page Selection", [
+                    "Welcome Page", "Inference Page"])
 
-if option == 'Dogs':
+if page == 'Welcome Page':
+    st.markdown("<h1 style='text-align: center;'>Welcome!</h1>",
+                unsafe_allow_html=True)
 
-    # Show dog images
-    folder_path = f"{os.path.join(os.getcwd(), DOG_PATH)}"
+    st.markdown("<h4 style='text-align: center;'>Are you ready to find out what dog breed you resemble?!</h4>",
+                unsafe_allow_html=True)
 
-    # display the user images to predict
-    image_names = os.listdir(folder_path)
-    image_selection = st.sidebar.selectbox(
-        "Please pick an image using this drop-down menu.", image_names)
+    st.markdown('''
+        In this project, I developed a dog breed classifier.
+        I used transfer learning to harness the power of the [VGG16 architecture](https://neurohive.io/en/popular-networks/vgg16/) to create a dog breed classifier (133 classes multiclass classification)
+        and a PyTorch implementation of Multi-task Cascaded Convolutional Neural Networks ([MTCNN](https://github.com/timesler/facenet-pytorch)) for face detection.
+        The classifier achieved 74% accuracy on the test set and
+        is ready to tell you which dog breed you resemble!
+    ''')
 
-    selected_path = str(os.path.join(folder_path, image_selection))
-    image = Image.open(selected_path)
-    predict = run_app(selected_path)
+    st.markdown('''
+        
+    ''')
 
-    # display the results
-    st.markdown(predict)
-    st.image(image, use_column_width=True)
-    
+    st.markdown("<h2 style='text-align: center;'>Instructions</h1>",
+                unsafe_allow_html=True)
+    st.markdown('''
+        1. Click the selection box above, and press the "Inference Page" option.
+        2. Click the "Browse files" button to choose an image located on your local device.
+        3. Sit back, relax, and let the model do the heavy lifting!
+    ''')
+
 else:
+    uploaded_image = st.file_uploader(
+        "Upload Image", type=['png', 'jpeg', 'jpg'])
 
-    # show image of humann
-    folder_path = f"{os.path.join(os.getcwd(), HUMAN_PATH)}"
+    if uploaded_image is not None:
+        st.image(uploaded_image, use_column_width=True)
+        predict = run_app(uploaded_image)
+        st.write(predict)
 
-    # display the user images to predict
-    image_names = os.listdir(folder_path)
-    image_selection = st.sidebar.selectbox(
-        "Please pick an image using this drop-down menu.", image_names)
-
-    selected_path = os.path.join(folder_path, image_selection)
-    image = Image.open(selected_path)
-    predict = run_app(selected_path)
-
-    # display the results
-    st.markdown(predict)
-    st.image(image, use_column_width=True)
+    else:
+        st.markdown("<h2 style='text-align: center;'>Upload a picture of yourself to see which breed you resemble!</h2>",
+                    unsafe_allow_html=True)
+        st.write("* _Supported Formats: PNG, JPG, JPEG_")

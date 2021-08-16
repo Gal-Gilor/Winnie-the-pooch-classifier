@@ -195,23 +195,3 @@ if __name__ == "__main__":
 
         # run the app
         prompt = run_app(paths[0])
-
-##############################
-########## Frontend ##########
-##############################
-
-
-st.markdown('# Winnie the Pooch Classfier')
-option = st.sidebar.selectbox(
-    'Navigation Bar', ['Dogs', 'Humans'])
-
-
-if option == 'Dogs':
-    # Show dog images
-    st.markdown("""
-
-                """)
-else:
-    # show image of humans
-    st.markdown(""" 
-                """)
