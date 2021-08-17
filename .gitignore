@@ -135,8 +135,5 @@ lfw/
 # pytorch models
 *.pt
 
-# archive
-Archive/
-
 # pickle
 *.pkl

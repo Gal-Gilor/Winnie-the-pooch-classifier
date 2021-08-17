@@ -9,3 +9,6 @@ Archive/
 
 # pickle
 *.pkl
+
+# notebooks
+*.ipynb
