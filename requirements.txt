@@ -1,7 +1,8 @@
+numpy==1.20.1
 pandas==1.0.4
 facenet_pytorch==2.5.2
 torch==1.7.1
 streamlit==0.82.0
 joblib==1.0.1
-torchvision==0.8.2
 Pillow==8.2.0
+torchision==0.8.2

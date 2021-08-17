@@ -113,7 +113,8 @@ def run_app(img_path: str):
     try:
         # load dog breed classifier
         dog_breed_labels = jb.load('class_names.pkl')
-        dog_breed_model = torch.load('model_transfer.pt')
+        dog_breed_model = torch.load(
+            'breed-classifier.pt', map_location=torch.device('cpu'))
 
         # prepare image for breed classification
         image_tensor = prepare_image(img_path)
